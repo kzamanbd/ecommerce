@@ -20,7 +20,6 @@ jobs:
               run: |
                   git log -n 1 --pretty=format:'%an' > AUTHOR_NAME  # Store author name in env var
                   git log -n 1 --pretty=format:'%an' | xargs -I {} echo "AUTHOR_NAME={}" >> $GITHUB_ENV
-                  echo "AUTHOR_NAME='Your desired author name'" >> $GITHUB_ENV
 
     run-python-script:
         runs-on: ubuntu-latest # Runner operating system
