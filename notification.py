@@ -4,10 +4,10 @@ import os
 author = os.getenv('AUTHOR_NAME')
 branch_name = os.getenv('BRANCH_NAME')
 release_notes = os.getenv('RELEASE_NOTES')
-build_failed = os.getenv('BUILD_FAILED')
+build_result = os.getenv('BUILD_FAILED')
 build_error = os.getenv('BUILD_ERROR')
 
-if build_failed == 'true':
+if build_result == 'failure':
     message = f"""
     🚨 **Deployment Alert!**
 
