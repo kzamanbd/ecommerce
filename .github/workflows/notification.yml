@@ -9,32 +9,8 @@ env:
     SKYPE_PASSWORD: ${{ secrets.SKYPE_PASSWORD }}
 
 jobs:
-    build:
-        name: Prod CI/CD
-        runs-on: ubuntu-latest
-
-        strategy:
-            matrix:
-                node-version: [20.x]
-
-        steps:
-            - uses: actions/checkout@v4
-            - name: Use Node.js ${{ matrix.node-version }}
-              uses: actions/setup-node@v4
-              with:
-                  node-version: ${{ matrix.node-version }}
-                  cache: 'npm'
-            - run: npm ci
-            - run: npm run build:prod
-            - name: Set error flag if build fails
-              if: failure()
-              run: |
-                  echo "BUILD_FAILED=true" >> $GITHUB_ENV
-                  echo "BUILD_ERROR=$(cat /github/home/.npm/_logs/*.log | tail -n 20)" >> $GITHUB_ENV
-
     notification:
         runs-on: ubuntu-latest
-        needs: build
 
         steps:
             - uses: actions/checkout@v4 # Checkout repository code
