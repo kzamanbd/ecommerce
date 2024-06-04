@@ -16,8 +16,8 @@ jobs:
             - uses: actions/checkout@v4
 
             - name: Get Latest Commit Author
-              id: commit_info
-              run: echo "AUTHOR_NAME=$(git log -n 1 --pretty=format:'%an')" >> $GITHUB_ENV
+              run: |
+                  echo "AUTHOR_NAME=$(git log -n 1 --pretty=format:'%an')" >> $GITHUB_ENV
 
     run-python-script:
         runs-on: ubuntu-latest
