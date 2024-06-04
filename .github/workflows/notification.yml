@@ -9,27 +9,15 @@ env:
     SKYPE_PASSWORD: ${{ secrets.SKYPE_PASSWORD }}
 
 jobs:
-    commit-info:
-        runs-on: ubuntu-latest
-
-        steps:
-            - uses: actions/checkout@v4
-
-            - name: Get Latest Commit Author
-              id: get_author
-              run: |
-                  echo "AUTHOR_NAME=$(git log -n 1 --pretty=format:'%an')" >> $GITHUB_ENV
-
-            - name: Debug - Print Environment Variables
-              run: |
-                  echo "AUTHOR_NAME=$AUTHOR_NAME"
-
     run-python-script:
         runs-on: ubuntu-latest
-        needs: commit-info
 
         steps:
             - uses: actions/checkout@v4 # Checkout repository code
+
+            - name: Get Latest Commit Author
+              id: commit_info
+              run: echo "AUTHOR_NAME=$(git log -n 1 --pretty=format:'%an')" >> $GITHUB_ENV
 
             - name: Set up Python environment
               uses: actions/setup-python@v5 # Set up Python version
