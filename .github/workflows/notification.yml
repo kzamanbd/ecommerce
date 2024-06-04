@@ -64,12 +64,15 @@ jobs:
                   echo "BRANCH_NAME=$BRANCH_NAME"
                   echo "BUILD_RESULT=$BUILD_RESULT"
                   echo "GITHUB_RUN_ID=$GITHUB_RUN_ID"
+                  echo "GITHUB_ACTOR=$GITHUB_ACTOR"
+
               env:
                   AUTHOR_NAME: ${{ env.AUTHOR_NAME }}
                   RELEASE_NOTES: ${{ env.RELEASE_NOTES }}
                   BRANCH_NAME: ${{ env.BRANCH_NAME }}
                   BUILD_RESULT: ${{ needs.build.result }}
                   GITHUB_RUN_ID: ${{ github.run_id }}
+                  GITHUB_ACTOR: ${{ github.actor }}
 
             - name: Run Python script
               env:
@@ -78,4 +81,6 @@ jobs:
                   BRANCH_NAME: ${{ env.BRANCH_NAME }}
                   BUILD_RESULT: ${{ needs.build.result }}
                   GITHUB_RUN_ID: ${{ github.run_id }}
+                  GITHUB_ACTOR: ${{ github.actor }}
+
               run: python .github/notification.py
