@@ -75,4 +75,5 @@ jobs:
                   RELEASE_NOTES: ${{ env.RELEASE_NOTES }}
                   BRANCH_NAME: ${{ env.BRANCH_NAME }}
                   BUILD_FAILED: ${{ needs.build.result }}
+                  BUILD_ERROR: ${{ needs.build.outputs }}
               run: python notification.py
