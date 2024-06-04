@@ -1,4 +1,4 @@
-name: Run Python Script
+name: Continuous Integration Dev Environment
 
 on:
     push:
@@ -75,5 +75,5 @@ jobs:
                   RELEASE_NOTES: ${{ env.RELEASE_NOTES }}
                   BRANCH_NAME: ${{ env.BRANCH_NAME }}
                   BUILD_FAILED: ${{ needs.build.result }}
-                  BUILD_ERROR: ${{ needs.build.outputs }}
+                  BUILD_ERROR: ${{ needs.build.outputs.error }}
               run: python notification.py
