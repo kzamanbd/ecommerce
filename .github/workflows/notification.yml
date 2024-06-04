@@ -16,9 +16,13 @@ jobs:
             - uses: actions/checkout@v4
 
             - name: Get Latest Commit Author
+              id: get-author # Assign an ID for referencing
               run: |
-                  git log -n 1 --pretty=format:'%an' > COMMIT_AUTHOR  # Store author name in env var
-                  echo "##[set-output name=COMMIT_AUTHOR]$COMMIT_AUTHOR"  # Set output variable
+                  git log -n 1 --pretty=format:'%an'
+
+            - uses: actions/github-script@v6
+              with:
+                  script: core.setOutput('commit_author', steps.get-author.outputs.stdout) # Set output
 
     run-python-script:
         runs-on: ubuntu-latest # Runner operating system
