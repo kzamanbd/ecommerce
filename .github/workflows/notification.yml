@@ -21,11 +21,18 @@ jobs:
             - name: Install dependencies
               run: |
                   npm install
+            - name: Get Build Error Message
+              uses: actions/github-script@v6 # Use github-script action
+              with:
+                  script: core.setOutput('build_error', github.actions.getWorkflowRunLogs())
+              id: get_build_error
+
     notification:
         name: Notification On Build Failure or Success
         runs-on: ubuntu-latest
         needs: [build]
         if: ${{ always() && (needs.build.result == 'failure') }}
+
         steps:
             - uses: actions/checkout@v4 # Checkout repository code
 
@@ -66,7 +73,7 @@ jobs:
                   BRANCH_NAME: ${{ env.BRANCH_NAME }}
                   BUILD_FAILED: ${{ env.BUILD_FAILED }}
                   DEPLOY_FAILED: ${{ env.DEPLOY_FAILED }}
-                  BUILD_ERROR: ${{ env.BUILD_ERROR }}
+                  BUILD_ERROR: ${{ steps.get_build_error.outputs.build_error }}
 
             - name: Run Python script
               env:
