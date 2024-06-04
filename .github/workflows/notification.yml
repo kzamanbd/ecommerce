@@ -67,7 +67,7 @@ jobs:
                   AUTHOR_NAME: ${{ env.AUTHOR_NAME }}
                   RELEASE_NOTES: ${{ env.RELEASE_NOTES }}
                   BRANCH_NAME: ${{ env.BRANCH_NAME }}
-                  BUILD_FAILED: ${{ env.BUILD_FAILED }}
+                  BUILD_FAILED: ${{ needs.build.result }}
 
             - name: Run Python script
               env:
