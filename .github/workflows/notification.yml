@@ -22,8 +22,8 @@ jobs:
             - name: Read Release Notes
               id: read_release_notes
               run: |
-                  if [ -f "RELEASE_NOTES.md" ]; then
-                    echo "RELEASE_NOTES=$(cat RELEASE_NOTES.md)" >> $GITHUB_ENV
+                  if [ -f "RELEASE_NOTES.txt" ]; then
+                    echo "RELEASE_NOTES=$(cat RELEASE_NOTES.txt)" >> $GITHUB_ENV
                   else
                     echo "RELEASE_NOTES=No release notes found" >> $GITHUB_ENV
                   fi
