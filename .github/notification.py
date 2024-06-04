@@ -4,7 +4,7 @@ import os
 author = os.getenv('AUTHOR_NAME')
 branch_name = os.getenv('BRANCH_NAME')
 release_notes = os.getenv('RELEASE_NOTES')
-build_result = os.getenv('BUILD_FAILED')
+build_result = os.getenv('BUILD_RESULT')
 build_error = os.getenv('BUILD_ERROR')
 
 # Create the message to be sent
