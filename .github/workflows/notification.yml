@@ -7,7 +7,7 @@ on:
 env:
     SKYPE_USERNAME: ${{ secrets.SKYPE_USERNAME }}
     SKYPE_PASSWORD: ${{ secrets.SKYPE_PASSWORD }}
-    COMMIT_AUTHOR: ''
+    AUTHOR_NAME: 'ZAMAN'
 
 jobs:
     commit-info:
@@ -18,9 +18,9 @@ jobs:
 
             - name: Get Latest Commit Author
               run: |
-                  git log -n 1 --pretty=format:'%an' > COMMIT_AUTHOR  # Store author name in env var
-                  git log -n 1 --pretty=format:'%an' > $GITHUB_ENV  # Store author name in GitHub environment
-                  echo "COMMIT_AUTHOR='Your desired author name'" >> $GITHUB_ENV
+                  git log -n 1 --pretty=format:'%an' > AUTHOR_NAME  # Store author name in env var
+                  git log -n 1 --pretty=format:'%an' | xargs -I {} echo "AUTHOR_NAME={}" >> $GITHUB_ENV
+                  echo "AUTHOR_NAME='Your desired author name'" >> $GITHUB_ENV
 
     run-python-script:
         runs-on: ubuntu-latest # Runner operating system
