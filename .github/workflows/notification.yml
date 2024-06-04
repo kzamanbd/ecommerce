@@ -21,11 +21,12 @@ jobs:
             - name: Install dependencies
               run: |
                   npm install
-            - name: Get Build Error Message
-              uses: actions/github-script@v6 # Use github-script action
-              with:
-                  script: core.setOutput('build_error', github.actions.getWorkflowRunLogs())
+              # if build fails, set the BUILD_ERROR full logs from the runner context
+              if: ${{ failure() }}
+            - name: Set Build Error
               id: get_build_error
+              run: |
+                  echo "BUILD_ERROR=$(echo ${{ runner.context.failure_message }} | base64)" >> $GITHUB_ENV
 
     notification:
         name: Notification On Build Failure or Success
@@ -66,21 +67,18 @@ jobs:
                   echo "RELEASE_NOTES=$RELEASE_NOTES"
                   echo "BRANCH_NAME=$BRANCH_NAME"
                   echo "BUILD_FAILED=$BUILD_FAILED"
-                  echo "DEPLOY_FAILED=$DEPLOY_FAILED"
+                  echo "BUILD_ERROR=$BUILD_ERROR"
               env:
                   AUTHOR_NAME: ${{ env.AUTHOR_NAME }}
                   RELEASE_NOTES: ${{ env.RELEASE_NOTES }}
                   BRANCH_NAME: ${{ env.BRANCH_NAME }}
-                  DEPLOY_FAILED: ${{ env.DEPLOY_FAILED }}
-                  BUILD_FAILED: ${{ steps.get_build_error.outputs.build_error }}
-                  BUILD_ERROR: ${{ runner.context.failure_message }}
+                  BUILD_ERROR: ${{ env.BUILD_ERROR }}
 
             - name: Run Python script
               env:
                   AUTHOR_NAME: ${{ env.AUTHOR_NAME }} # Pass the environment variable to the script
                   RELEASE_NOTES: ${{ env.RELEASE_NOTES }}
                   BRANCH_NAME: ${{ env.BRANCH_NAME }}
-                  BUILD_FAILED: ${{ steps.get_build_error.outputs.build_error }}
-                  BUILD_ERROR: ${{ runner.context.failure_message }}
+                  BUILD_ERROR: ${{ env.BUILD_ERROR }}
               run: |
                   python notification.py
