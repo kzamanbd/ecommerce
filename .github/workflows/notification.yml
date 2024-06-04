@@ -26,7 +26,7 @@ jobs:
             - name: Set Build Error
               id: get_build_error
               run: |
-                  echo "BUILD_ERROR=$(cat npm-debug.log)" >> $GITHUB_ENV
+                  echo "BUILD_ERROR=$(cat /github/home/.npm/_logs/*-debug.log)" >> $GITHUB_ENV
 
     notification:
         name: Notification On Build Failure or Success
