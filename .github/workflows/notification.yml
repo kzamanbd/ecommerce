@@ -30,6 +30,12 @@ jobs:
               run: |
                   echo "BUILD_FAILED=true" >> $GITHUB_ENV
 
+            - name: Ensure Build Success
+              run: |
+                  if [ -z "${{ env.BUILD_FAILED }}" ]; then
+                    echo "BUILD_FAILED=false" >> $GITHUB_ENV
+                  fi
+
     notification:
         name: Notification On Build Failure or Success
         runs-on: ubuntu-latest
