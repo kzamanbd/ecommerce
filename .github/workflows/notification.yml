@@ -24,8 +24,8 @@ jobs:
               if: failure()
               run: |
                   echo "build_failed=true" >> $GITHUB_ENV
-                  ERROR_LOG=$(tail -n 20 /home/runner/.npm/_logs/*.log)
-                  echo "BUILD_ERROR=$ERROR_LOG" >> $GITHUB_ENV
+                  ERROR_LOG=$(tail -n 20 /home/runner/.npm/_logs/*.log | sed 's/"/\\"/g' | tr '\n' ' ')
+                  echo "BUILD_ERROR=\"$ERROR_LOG\"" >> $GITHUB_ENV
 
     notification:
         name: Notification On Build Failure or Success
