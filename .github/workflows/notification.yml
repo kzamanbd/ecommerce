@@ -78,4 +78,4 @@ jobs:
                   BRANCH_NAME: ${{ env.BRANCH_NAME }}
                   BUILD_FAILED: ${{ needs.build.result }}
                   BUILD_ERROR: ${{ needs.build.outputs }}
-              run: python notification.py
+              run: python .github/notification.py
