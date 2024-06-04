@@ -19,6 +19,15 @@ jobs:
               id: commit_info
               run: echo "AUTHOR_NAME=$(git log -n 1 --pretty=format:'%an')" >> $GITHUB_ENV
 
+            - name: Read Release Notes
+              id: read_release_notes
+              run: |
+                  if [ -f "RELEASE_NOTES.md" ]; then
+                    echo "RELEASE_NOTES=$(cat RELEASE_NOTES.md)" >> $GITHUB_ENV
+                  else
+                    echo "RELEASE_NOTES=No release notes found" >> $GITHUB_ENV
+                  fi
+
             - name: Set up Python environment
               uses: actions/setup-python@v5 # Set up Python version
               with:
@@ -28,14 +37,17 @@ jobs:
               run: |
                   pip install skpy
 
-            - name: Debug - Check AUTHOR_NAME
+            - name: Debug - Check Environment Variables
               run: |
                   echo "AUTHOR_NAME=$AUTHOR_NAME"
+                  echo "RELEASE_NOTES=$RELEASE_NOTES"
               env:
                   AUTHOR_NAME: ${{ env.AUTHOR_NAME }}
+                  RELEASE_NOTES: ${{ env.RELEASE_NOTES }}
 
             - name: Run Python script
               env:
                   AUTHOR_NAME: ${{ env.AUTHOR_NAME }} # Pass the environment variable to the script
+                  RELEASE_NOTES: ${{ env.RELEASE_NOTES }}
               run: |
                   python notification.py
