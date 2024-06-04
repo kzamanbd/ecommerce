@@ -7,7 +7,6 @@ on:
 env:
     SKYPE_USERNAME: ${{ secrets.SKYPE_USERNAME }}
     SKYPE_PASSWORD: ${{ secrets.SKYPE_PASSWORD }}
-    AUTHOR_NAME: 'ZAMAN'
 
 jobs:
     commit-info:
