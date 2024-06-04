@@ -4,6 +4,10 @@ on:
     push:
         branches: [master]
 
+env:
+    SKYPE_USERNAME: ${{ secrets.SKYPE_USERNAME }}
+    SKYPE_PASSWORD: ${{ secrets.SKYPE_PASSWORD }}
+
 jobs:
     run-python-script:
         runs-on: ubuntu-latest # Runner operating system
