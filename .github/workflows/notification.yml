@@ -23,18 +23,6 @@ jobs:
 
             - name: Run Build
               run: npm run build
-              continue-on-error: true
-
-            - name: Capture build error log
-              if: failure()
-              run: |
-                  echo "BUILD_FAILED=true" >> $GITHUB_ENV
-
-            - name: Ensure Build Success
-              run: |
-                  if [ -z "${{ env.BUILD_FAILED }}" ]; then
-                    echo "BUILD_FAILED=false" >> $GITHUB_ENV
-                  fi
 
     notification:
         name: Notification On Build Failure or Success
@@ -86,5 +74,5 @@ jobs:
                   AUTHOR_NAME: ${{ env.AUTHOR_NAME }}
                   RELEASE_NOTES: ${{ env.RELEASE_NOTES }}
                   BRANCH_NAME: ${{ env.BRANCH_NAME }}
-                  BUILD_FAILED: ${{ env.BUILD_FAILED }}
+                  BUILD_FAILED: ${{ needs.build.result }}
               run: python notification.py
