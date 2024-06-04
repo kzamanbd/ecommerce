@@ -13,13 +13,12 @@ jobs:
         runs-on: ubuntu-latest
 
         steps:
-            - uses: actions/checkout@v3
+            - uses: actions/checkout@v4
 
             - name: Get Latest Commit Author
               run: |
-                  git log -n 1 --pretty=format:'%an'  # Get name of the latest commit author
-                  # You can also use:
-                  # git log -n 1 --pretty=format:'%cn'  # Get name of the latest committer
+                  git log -n 1 --pretty=format:'%an' > COMMIT_AUTHOR  # Store author name in env var
+                  echo "##[set-output name=COMMIT_AUTHOR]$COMMIT_AUTHOR"  # Set output variable
 
     run-python-script:
         runs-on: ubuntu-latest # Runner operating system
