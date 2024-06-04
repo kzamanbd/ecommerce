@@ -19,13 +19,13 @@ jobs:
               with:
                   node-version: '20'
             - name: Install dependencies
-              run: |
-                  npm install
-            - name: Set error flag if build fails
+              run: npm install
+            - name: Capture build error log
               if: failure()
               run: |
                   echo "build_failed=true" >> $GITHUB_ENV
-                  echo "BUILD_ERROR=$(cat /home/runner/.npm/_logs/*.log | tail -n 20)" >> $GITHUB_ENV
+                  ERROR_LOG=$(tail -n 20 /home/runner/.npm/_logs/*.log)
+                  echo "BUILD_ERROR=$ERROR_LOG" >> $GITHUB_ENV
 
     notification:
         name: Notification On Build Failure or Success
@@ -52,9 +52,9 @@ jobs:
                   fi
 
             - name: Set up Python environment
-              uses: actions/setup-python@v5 # Set up Python version
+              uses: actions/setup-python@v5
               with:
-                  python-version: '3.x' # Specify your desired Python version (e.g., 3.8)
+                  python-version: '3.x'
 
             - name: Install dependencies
               run: |
@@ -71,13 +71,14 @@ jobs:
                   AUTHOR_NAME: ${{ env.AUTHOR_NAME }}
                   RELEASE_NOTES: ${{ env.RELEASE_NOTES }}
                   BRANCH_NAME: ${{ env.BRANCH_NAME }}
+                  BUILD_FAILED: ${{ env.BUILD_FAILED }}
                   BUILD_ERROR: ${{ env.BUILD_ERROR }}
 
             - name: Run Python script
               env:
-                  AUTHOR_NAME: ${{ env.AUTHOR_NAME }} # Pass the environment variable to the script
+                  AUTHOR_NAME: ${{ env.AUTHOR_NAME }}
                   RELEASE_NOTES: ${{ env.RELEASE_NOTES }}
                   BRANCH_NAME: ${{ env.BRANCH_NAME }}
+                  BUILD_FAILED: ${{ env.BUILD_FAILED }}
                   BUILD_ERROR: ${{ env.BUILD_ERROR }}
-              run: |
-                  python notification.py
+              run: python notification.py
