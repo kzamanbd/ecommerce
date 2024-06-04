@@ -1,8 +1,7 @@
 import os
 from skpy import Skype
 
-author = os.getenv("COMMIT_AUTHOR")
-
+author = os.environ.get("COMMIT_AUTHOR")
 username = os.environ.get("SKYPE_USERNAME")
 password = os.environ.get("SKYPE_PASSWORD")
 recipient_id = "live:.cid.a47b92b06acd5a39"
