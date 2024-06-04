@@ -29,8 +29,6 @@ jobs:
               if: failure()
               run: |
                   echo "BUILD_FAILED=true" >> $GITHUB_ENV
-                  ERROR_LOG=$(tail -n 20 /home/runner/.npm/_logs/*.log | sed 's/"/\\"/g' | tr '\n' ' ')
-                  echo "BUILD_ERROR=\"$ERROR_LOG\"" >> $GITHUB_ENV
 
     notification:
         name: Notification On Build Failure or Success
@@ -71,13 +69,11 @@ jobs:
                   echo "RELEASE_NOTES=$RELEASE_NOTES"
                   echo "BRANCH_NAME=$BRANCH_NAME"
                   echo "BUILD_FAILED=$BUILD_FAILED"
-                  echo "BUILD_ERROR=$BUILD_ERROR"
               env:
                   AUTHOR_NAME: ${{ env.AUTHOR_NAME }}
                   RELEASE_NOTES: ${{ env.RELEASE_NOTES }}
                   BRANCH_NAME: ${{ env.BRANCH_NAME }}
                   BUILD_FAILED: ${{ env.BUILD_FAILED }}
-                  BUILD_ERROR: ${{ env.BUILD_ERROR }}
 
             - name: Run Python script
               env:
@@ -85,5 +81,4 @@ jobs:
                   RELEASE_NOTES: ${{ env.RELEASE_NOTES }}
                   BRANCH_NAME: ${{ env.BRANCH_NAME }}
                   BUILD_FAILED: ${{ env.BUILD_FAILED }}
-                  BUILD_ERROR: ${{ env.BUILD_ERROR }}
               run: python notification.py
