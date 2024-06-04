@@ -80,5 +80,6 @@ jobs:
                   AUTHOR_NAME: ${{ env.AUTHOR_NAME }} # Pass the environment variable to the script
                   RELEASE_NOTES: ${{ env.RELEASE_NOTES }}
                   BRANCH_NAME: ${{ env.BRANCH_NAME }}
+                  BUILD_FAILED: ${{ steps.get_build_error.outputs.build_error }}
               run: |
                   python notification.py
