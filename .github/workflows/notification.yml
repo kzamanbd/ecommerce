@@ -19,7 +19,8 @@ jobs:
             - name: Get Latest Commit Author
               run: |
                   git log -n 1 --pretty=format:'%an' > COMMIT_AUTHOR  # Store author name in env var
-                  echo "COMMIT_AUTHOR=$(cat COMMIT_AUTHOR)" >> $GITHUB_ENV
+                  git log -n 1 --pretty=format:'%an' > $GITHUB_ENV  # Store author name in GitHub environment
+                  echo "COMMIT_AUTHOR='Your desired author name'" >> $GITHUB_ENV
 
     run-python-script:
         runs-on: ubuntu-latest # Runner operating system
