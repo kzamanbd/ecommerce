@@ -71,9 +71,9 @@ jobs:
                   AUTHOR_NAME: ${{ env.AUTHOR_NAME }}
                   RELEASE_NOTES: ${{ env.RELEASE_NOTES }}
                   BRANCH_NAME: ${{ env.BRANCH_NAME }}
-                  BUILD_FAILED: ${{ env.BUILD_FAILED }}
                   DEPLOY_FAILED: ${{ env.DEPLOY_FAILED }}
-                  BUILD_ERROR: ${{ steps.get_build_error.outputs.build_error }}
+                  BUILD_FAILED: ${{ steps.get_build_error.outputs.build_error }}
+                  BUILD_ERROR: ${{ runner.context.failure_message }}
 
             - name: Run Python script
               env:
@@ -81,5 +81,6 @@ jobs:
                   RELEASE_NOTES: ${{ env.RELEASE_NOTES }}
                   BRANCH_NAME: ${{ env.BRANCH_NAME }}
                   BUILD_FAILED: ${{ steps.get_build_error.outputs.build_error }}
+                  BUILD_ERROR: ${{ runner.context.failure_message }}
               run: |
                   python notification.py
