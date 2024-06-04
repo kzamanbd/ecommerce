@@ -21,12 +21,11 @@ jobs:
             - name: Install dependencies
               run: |
                   npm install
-              # if build fails, set the BUILD_ERROR full logs /github/home/.npm/_logs/*-debug.log
-              if: ${{ failure() }}
-            - name: Set Build Error
-              id: get_build_error
+            - name: Set error flag if build fails
+              if: failure()
               run: |
-                  cat /home/runner/.npm/_logs/*.log)
+                  echo "build_failed=true" >> $GITHUB_ENV
+                  echo "BUILD_ERROR=$(cat /github/home/.npm/_logs/*.log | tail -n 20)" >> $GITHUB_ENV
 
     notification:
         name: Notification On Build Failure or Success
