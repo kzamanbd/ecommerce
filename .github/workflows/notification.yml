@@ -7,6 +7,7 @@ on:
 env:
     SKYPE_USERNAME: ${{ secrets.SKYPE_USERNAME }}
     SKYPE_PASSWORD: ${{ secrets.SKYPE_PASSWORD }}
+    COMMIT_AUTHOR: ''
 
 jobs:
     commit-info:
@@ -18,20 +19,13 @@ jobs:
             - name: Get Latest Commit Author
               run: |
                   git log -n 1 --pretty=format:'%an' > COMMIT_AUTHOR  # Store author name in env var
-                  echo "##[set-output name=COMMIT_AUTHOR]$COMMIT_AUTHOR"  # Set output variable
+                  echo "COMMIT_AUTHOR=$(cat COMMIT_AUTHOR)" >> $GITHUB_ENV
 
     run-python-script:
         runs-on: ubuntu-latest # Runner operating system
         needs: commit-info
         steps:
             - uses: actions/checkout@v4 # Checkout repository code
-
-            - name: Get Commit Author from Previous Job
-              uses: actions/github-script@v6
-              with:
-                  script: |
-                      commit_author = github.context.jobs.commit-info.outputs.commit_author
-                      console.log(`Commit Author: ${commit_author}`)  # Log for debugging
 
             - name: Set up Python environment
               uses: actions/setup-python@v5 # Set up Python version
