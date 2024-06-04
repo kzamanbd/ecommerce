@@ -20,6 +20,11 @@ jobs:
                   node-version: '20'
             - name: Install dependencies
               run: npm install
+
+            - name: Run Build
+              run: npm run build
+              continue-on-error: true
+
             - name: Capture build error log
               if: failure()
               run: |
