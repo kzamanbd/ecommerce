@@ -25,6 +25,7 @@ jobs:
         name: Notification On Build Failure or Success
         runs-on: ubuntu-latest
         needs: [build]
+        if: ${{ always() && (needs.build.result == 'failure') }}
         steps:
             - uses: actions/checkout@v4 # Checkout repository code
 
