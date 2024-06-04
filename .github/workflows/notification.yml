@@ -9,8 +9,32 @@ env:
     SKYPE_PASSWORD: ${{ secrets.SKYPE_PASSWORD }}
 
 jobs:
-    run-python-script:
+    build:
+        name: Prod CI/CD
         runs-on: ubuntu-latest
+
+        strategy:
+            matrix:
+                node-version: [20.x]
+
+        steps:
+            - uses: actions/checkout@v4
+            - name: Use Node.js ${{ matrix.node-version }}
+              uses: actions/setup-node@v4
+              with:
+                  node-version: ${{ matrix.node-version }}
+                  cache: 'npm'
+            - run: npm ci
+            - run: npm run build:prod
+            - name: Set error flag if build fails
+              if: failure()
+              run: |
+                  echo "BUILD_FAILED=true" >> $GITHUB_ENV
+                  echo "BUILD_ERROR=$(cat /github/home/.npm/_logs/*.log | tail -n 20)" >> $GITHUB_ENV
+
+    notification:
+        runs-on: ubuntu-latest
+        needs: build
 
         steps:
             - uses: actions/checkout@v4 # Checkout repository code
@@ -44,10 +68,15 @@ jobs:
                   echo "AUTHOR_NAME=$AUTHOR_NAME"
                   echo "RELEASE_NOTES=$RELEASE_NOTES"
                   echo "BRANCH_NAME=$BRANCH_NAME"
+                  echo "BUILD_FAILED=$BUILD_FAILED"
+                  echo "DEPLOY_FAILED=$DEPLOY_FAILED"
               env:
                   AUTHOR_NAME: ${{ env.AUTHOR_NAME }}
                   RELEASE_NOTES: ${{ env.RELEASE_NOTES }}
                   BRANCH_NAME: ${{ env.BRANCH_NAME }}
+                  BUILD_FAILED: ${{ env.BUILD_FAILED }}
+                  DEPLOY_FAILED: ${{ env.DEPLOY_FAILED }}
+                  BUILD_ERROR: ${{ env.BUILD_ERROR }}
 
             - name: Run Python script
               env:
