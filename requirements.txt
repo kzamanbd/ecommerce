@@ -1,0 +1,4 @@
+# This is a comment, lines starting with # are ignored
+
+# Package name with no version constraint (installs the latest version)
+skpy
