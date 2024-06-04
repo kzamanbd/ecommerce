@@ -5,24 +5,23 @@ on:
         branches: [master]
 
 jobs:
-  run-python-script:
-    runs-on: ubuntu-latest  # Runner operating system
+    run-python-script:
+        runs-on: ubuntu-latest # Runner operating system
 
-    steps:
-      - uses: actions/checkout@v4  # Checkout repository code
+        steps:
+            - uses: actions/checkout@v4 # Checkout repository code
 
-      - name: Set up Python environment
-        uses: actions/setup-python@v4  # Set up Python version
-        with:
-          python-version: '3.x'  # Specify your desired Python version (e.g., 3.8)
+            - name: Set up Python environment
+              uses: actions/setup-python@v4 # Set up Python version
+              with:
+                  python-version: '3.x' # Specify your desired Python version (e.g., 3.8)
 
-      - name: Install dependencies (if applicable)
-        run: |
-          if [ -f requirements.txt ]; then
-            pip install -r requirements.txt
-          fi
+            - name: Install dependencies (if applicable)
+              run: |
+                  if [ -f requirements.txt ]; then
+                    pip install -r requirements.txt
+                  fi
 
-      - name: Run Python script
-        run: |
-          python print("Hello world")  # Replace with your script's filename
-
+            - name: Run Python script
+              run: |
+                  python notification.py  # Replace with your script's filename
