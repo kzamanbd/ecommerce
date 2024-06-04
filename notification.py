@@ -11,10 +11,6 @@ try:
     chat = skype.chats.chat(group_id)
     chat.sendMsg(message)
     print("Message sent successfully!")
-    chats = skype.chats.recent()
-    group_name = "JERP"
-    for chat_id, chat in chats.items():
-        print(chat)
 
 except Exception as e:
     print(f"Failed to send message: {e}")

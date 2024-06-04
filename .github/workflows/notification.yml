@@ -9,9 +9,21 @@ env:
     SKYPE_PASSWORD: ${{ secrets.SKYPE_PASSWORD }}
 
 jobs:
+    commit-info:
+        runs-on: ubuntu-latest
+
+        steps:
+            - uses: actions/checkout@v3
+
+            - name: Get Latest Commit Author
+              run: |
+                  git log -n 1 --pretty=format:'%an'  # Get name of the latest commit author
+                  # You can also use:
+                  # git log -n 1 --pretty=format:'%cn'  # Get name of the latest committer
+
     run-python-script:
         runs-on: ubuntu-latest # Runner operating system
-
+        needs: commit-info
         steps:
             - uses: actions/checkout@v4 # Checkout repository code
 
@@ -20,10 +32,10 @@ jobs:
               with:
                   python-version: '3.x' # Specify your desired Python version (e.g., 3.8)
 
-            - name: Install dependencies (if applicable)
+            - name: Install dependencies
               run: |
-                  pip install skpy  # Replace with your dependencies
+                  pip install skpy
 
             - name: Run Python script
               run: |
-                  python notification.py  # Replace with your script's filename
+                  python notification.py
