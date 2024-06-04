@@ -9,9 +9,22 @@ env:
     SKYPE_PASSWORD: ${{ secrets.SKYPE_PASSWORD }}
 
 jobs:
-    notification:
+    build:
         runs-on: ubuntu-latest
-
+        steps:
+            - uses: actions/checkout@v4 # Checkout repository code
+            # setup node
+            - name: Set up Node.js
+              uses: actions/setup-node@v4
+              with:
+                  node-version: '20'
+            - name: Install dependencies
+              run: |
+                  npm install
+    notification:
+        name: Notification On Build Failure or Success
+        runs-on: ubuntu-latest
+        needs: [build]
         steps:
             - uses: actions/checkout@v4 # Checkout repository code
 
