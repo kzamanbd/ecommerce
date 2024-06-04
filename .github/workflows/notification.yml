@@ -63,11 +63,13 @@ jobs:
                   echo "RELEASE_NOTES=$RELEASE_NOTES"
                   echo "BRANCH_NAME=$BRANCH_NAME"
                   echo "BUILD_FAILED=$BUILD_FAILED"
+                  echo "BUILD_ERROR=$BUILD_ERROR"
               env:
                   AUTHOR_NAME: ${{ env.AUTHOR_NAME }}
                   RELEASE_NOTES: ${{ env.RELEASE_NOTES }}
                   BRANCH_NAME: ${{ env.BRANCH_NAME }}
                   BUILD_FAILED: ${{ needs.build.result }}
+                  BUILD_ERROR: ${{ needs.build.outputs }}
 
             - name: Run Python script
               env:
@@ -75,5 +77,5 @@ jobs:
                   RELEASE_NOTES: ${{ env.RELEASE_NOTES }}
                   BRANCH_NAME: ${{ env.BRANCH_NAME }}
                   BUILD_FAILED: ${{ needs.build.result }}
-                  BUILD_ERROR: ${{ needs.build.outputs.error }}
+                  BUILD_ERROR: ${{ needs.build.outputs }}
               run: python notification.py
