@@ -17,12 +17,15 @@ if branch_name == "release/prod-vue3x":
 elif branch_name == "release/version-vue3x":
     origin = "Development Environment"
     
-if build_result == "cancelled":
+try:
     response = requests.get(f"https://api.github.com/users/{github_actor}")
-    if response.status_code == 200:
-        data = response.json()
-        author_name = data.get("name", author_name)
-        print(author_name)
+    data = response.json()
+    author_name = data.get("name", author_name)
+    print(author_name)
+        
+except Exception as e:
+    print("Failed to fetch author name from GitHub API")
+    
 
 # Create the message to be sent
 message = f"""
