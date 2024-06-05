@@ -55,7 +55,7 @@ jobs:
 
             - name: Install dependencies
               run: |
-                  pip install skpy
+                  pip install skpy requests
 
             - name: Debug - Check Environment Variables
               run: |
