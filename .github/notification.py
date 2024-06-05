@@ -16,6 +16,13 @@ if branch_name == "release/prod-vue3x":
     origin = "Production Environment"
 elif branch_name == "release/version-vue3x":
     origin = "Development Environment"
+    
+if build_result == "cancelled":
+    response = requests.get(f"https://api.github.com/users/{github_actor}")
+    if response.status_code == 200:
+        data = response.json()
+        author_name = data.get("name", author_name)
+        print(author_name)
 
 # Create the message to be sent
 message = f"""
@@ -117,11 +124,6 @@ if build_result == "failure":
     message = error_message
 elif build_result == "cancelled":
     message = cancelled_message
-    response = requests.get(f"https://api.github.com/users/{github_actor}")
-    if response.status_code == 200:
-        data = response.json()
-        author_name = data.get("name", author_name)
-        print(author_name)
 
 # Function to send the message through Skype bot
 print(message)
